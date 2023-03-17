@@ -1,0 +1,13 @@
+.container{
+  max-width: 95%;
+  margin:20px auto;
+}
+.container .image-container{
+  columns:4 250px;
+  gap:10px;
+}
+.container .image-container img{
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
