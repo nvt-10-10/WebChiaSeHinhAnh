@@ -12,7 +12,7 @@
 					href="HomeControl">PIXEl</a>
 				<p>Khám phá trên 3 triệu hình ảnh và video được chia sẻ bởi cộng
 					đồng hào phóng của chúng tôi.</p>
-				<div
+				<div````
 					style="display: flex; justify-content: space-between; width: 10%;">
 					<a href="https://www.instagram.com/ntminh16201/"
 						class="bi bi-instagram"></a><a

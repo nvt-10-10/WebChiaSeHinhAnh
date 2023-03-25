@@ -20,6 +20,7 @@
 <link href="css/signin.css" rel="stylesheet">
 </head>
 <body class="text-center" style="background-color: #ffffff">
+	
 	<main class="form-signin w-100 m-auto"
 		style="background-color: #f8f9fa; border-radius: 10px">
 		<form action="LoginControl" method="post">
@@ -46,7 +47,7 @@
 			<button class="w-100 btn btn-lg btn-primary" type="submit">Đăng
 				nhập</button>
 			<p>
-				Bạn chưa có tài khoản? <a href="signup.jsp">Đăng ký</a>
+				Bạn chưa có tài khoảng? <a href="signup.jsp">Đăng ký</a>
 			</p>
 		</form>
 	</main>
