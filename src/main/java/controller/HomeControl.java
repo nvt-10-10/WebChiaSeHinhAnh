@@ -26,7 +26,6 @@ public class HomeControl extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stubs
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		ImageDao imageDao = new ImageDao();
@@ -43,10 +42,13 @@ public class HomeControl extends HttpServlet {
 		Web web = webDao.getInfBanner();
 		request.setAttribute("web", web);
 		request.getRequestDispatcher("home.jsp").forward(request, response);
+	
+		// TODO Auto-generated method stubs
+	
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
 	}
 
 	 

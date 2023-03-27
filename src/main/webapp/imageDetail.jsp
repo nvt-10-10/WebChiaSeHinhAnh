@@ -28,13 +28,50 @@
 </style>
 <link rel="icon" href="img/Logo.png" type="image/x-icon">
 <title>PIXEL</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document)
+			.ready(
+					function() {
+						var originalForm = '<form action="UpdateCommentCotroller?Iid=${detail.idImage}&Uid=${Ac.userID}&Cid=${detail.idCategory}" method="post">'
+								+ '<input type="hidden" name="id_commennt" id="id_commennt" value="">'
+								+ '<textarea name="comment" id="comment" placeholder="comment" required></textarea>'
+								+ '<button class="comment-submit" id="huy" type="submit">Gửi</button>'
+								+ '<a class="comment-submit" style="background-color: aliceblue ; color: black; margin-left: 5px;" id="huy" href="#">Hủy</a>'
+								+ '</form>';
+						var form2 = '<form action="InsertCommentControl?Iid=${detail.idImage}&Uid=${Ac.userID}&Cid=${detail.idCategory}" method="post"> '
+								+ '<textarea name="comment" placeholder="comment" required></textarea>'
+								+ '<button class="comment-submit" type="submit">Comment</button>'
+								+ '</form>';
+
+						var commentForm = document.getElementById("comment1");
+
+						var arr_edit = document
+								.querySelectorAll(".edit-comment");
+						for (var i = 0; i < arr_edit.length; i++) {
+							arr_edit[i].addEventListener("click", function(e) {
+								console.log("123");
+								e.preventDefault();
+								var commentId = $(this).data("comment-id");
+								var commentText = $(this).data("comment-text");
+								commentForm.innerHTML = originalForm;
+								$("#id_commennt").val(commentId);
+								$("#comment").val(commentText);
+							});
+						}
+
+						$(document).on("click", "a#huy", function(e) {
+							console.log("123");
+							e.preventDefault();
+							commentForm.innerHTML = form2;
+						});
+
+					});
+</script>
 </head>
 <body>
-<%
-String idImage = request.getParameter("Iid");
-String Uid = request.getParameter("Uid");
-String Cid = request.getParameter("Cid");
-%>
+
+
 	<jsp:include page="headers.jsp"></jsp:include>
 	<main
 		style="max-width: 1200px; margin: 0 auto; padding: 15px; display: flex; margin-top: 20px">
@@ -59,13 +96,14 @@ String Cid = request.getParameter("Cid");
 								</div>
 								<div style="display: flex; margin-left: 150px">
 									<c:if test="${listCM.userID == sessionScope.acc.userID}">
-									<a class="bi bi-pencil-fill"
+										<a class="bi bi-pencil-fill edit-comment"
 											style="padding: 0 10px 0 0; text-decoration: none; font-size: 13px;"
-											href="#editcomment"></a>
+											data-comment-id="${listCM.idComment}"
+											data-comment-text="${listCM.comment}" href="#"></a>
 										<a class="bi bi-trash-fill"
-											style="padding: 0 10px 0 0; text-decoration: none; font-size: 13px;color: red"
+											style="padding: 0 10px 0 0; text-decoration: none; font-size: 13px; color: red"
 											href="DeleteCommentControl?CMid=${listCM.idComment}&Iid=${detail.idImage}&Uid=${Ac.userID}&Cid=${detail.idCategory}"></a>
-										
+
 									</c:if>
 								</div>
 							</div>
@@ -82,17 +120,29 @@ String Cid = request.getParameter("Cid");
 							<div class="name">${sessionScope.acc.lastName}
 								${sessionScope.acc.firstName}</div>
 						</div>
-						<form
-							action="InsertCommentControl?Iid=${detail.idImage}&Uid=${Ac.userID}&Cid=${detail.idCategory}"
-							method="post">
-							<textarea name="comment" placeholder="comment" required></textarea>
-							<button class="comment-submit" type="submit">Comment</button>
-						</form>
+						<div id="comment1">
+							<form
+								action="InsertCommentControl?Iid=${detail.idImage}&Uid=${Ac.userID}&Cid=${detail.idCategory}"
+								method="post">
+								<textarea name="comment" placeholder="comment" required></textarea>
+								<button class="comment-submit" type="submit">Comment</button>
+							</form>
+						</div>
 					</div>
 				</c:if>
 				<c:if test="${sessionScope.acc == null}">
+					<%
+					String idImage = request.getParameter("Iid");
+					String Uid = request.getParameter("Uid");
+					String Cid = request.getParameter("Cid");
+
+					HttpSession session1 = request.getSession();
+					session1.setAttribute("Iid", idImage);
+					session1.setAttribute("Uid", Uid);
+					session1.setAttribute("Cid", Cid);
+					%>
 					<div class="comment-box">
-						<a href="Login.jsp?Iid=${idImage}&Uid=${userID}&Cid=${idCategory}">Đăng nhập để bình luận</a>
+						<a href="Login.jsp">Đăng nhập để bình luận</a>
 					</div>
 				</c:if>
 			</div>
@@ -139,7 +189,7 @@ String Cid = request.getParameter("Cid");
 						src="https://img.icons8.com/ios/100/000000/compact-camera.png"
 						width="35" height="35" />${detail.camera}</a>
 					<div>
-						<p>${detail.tieuCu}.0mm · ${detail.khauDo} · 
+						<p>${detail.tieuCu}.0mm·${detail.khauDo} ·
 							${detail.tocDoManTrap} · ISO ${detail.iSO}</p>
 					</div>
 					<div style="display: flex; justify-content: space-between;">
@@ -167,8 +217,7 @@ String Cid = request.getParameter("Cid");
 			<div style="max-width: 100%; margin: 5px auto;">
 				<div style="columns: 2 100px; gap: 5px;">
 					<c:forEach items="${listImg_Cid}" var="I">
-						<a
-							href="ImageDetail?Iid=${I.idImage}&Uid=${I.userID}&Cid=${I.idCategory}">
+						<a href="ImageDetail?Iid=${idImage}&Uid=${Uid}&Cid=${Cid }}">
 							<img style="margin-bottom: 5px; border-radius: 5px; width: 100%;"
 							src="img/dataImg/${I.images}" alt="Lỗi">
 						</a>
@@ -178,20 +227,6 @@ String Cid = request.getParameter("Cid");
 		</div>
 	</main>
 	<!-- Đổi inf -->
-	<div class="modal" id="editcomment">
-		<div class="modal__overlay"></div>
-		<div class="modal__body">
-			<div class="comment-box">	
-						<form
-							action="UpdateCommentCotroller?Iid=${detail.id}&Uid=${Ac.userID}&Cid=${detail.idCategory}"
-							method="post">
-							<textarea name="comment" placeholder="comment" required></textarea>
-							<button class="comment-submit" type="submit">Comment</button>
-						</form>
-					</div>
-			<div class="moda__inner"></div>
-		</div>
-	</div>
-	
+
 </body>
 </html>

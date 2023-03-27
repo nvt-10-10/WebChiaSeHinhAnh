@@ -61,4 +61,19 @@ public class CommentDao {
 		return list;
 
 	}
+	
+	public void updateComment(String id,String comment) {
+		String query = "update  Comments set [comment]= ?  ,[commentDay]= CURRENT_TIMESTAMP "+  " where [idComment] = ?" ;
+	
+		try {
+			conn = new DBContext().getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, comment);
+			ps.setString(2, id);
+			System.out.println(query);
+			ps.executeUpdate();
+		
+		} catch (Exception e) {
+		}
+	}
 }

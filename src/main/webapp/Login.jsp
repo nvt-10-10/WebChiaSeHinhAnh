@@ -1,3 +1,4 @@
+<%@page import="org.apache.tomcat.util.net.openssl.OpenSSLUtil"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -20,10 +21,11 @@
 <link href="css/signin.css" rel="stylesheet">
 </head>
 <body class="text-center" style="background-color: #ffffff">
-	
+
 	<main class="form-signin w-100 m-auto"
 		style="background-color: #f8f9fa; border-radius: 10px">
 		<form action="LoginControl" method="post">
+					
 			<img class="mb-4" src="img/Logo.png" alt="" width="72" height="57">
 			<h1 class="h3 mb-3 fw-normal">Đăng nhập</h1>
 

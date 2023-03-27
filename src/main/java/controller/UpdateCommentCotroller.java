@@ -30,18 +30,8 @@ public class UpdateCommentCotroller extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		String idImage = request.getParameter("Iid");
-		String Uid = request.getParameter("Uid");
-		String Cid = request.getParameter("Cid");
-		CommentDao Udao = new CommentDao();
-		String comment = request.getParameter("comment");
-		HttpSession session = request.getSession();
-		Accounts ac = (Accounts) session.getAttribute("acc");
-		String userID = ac.getUserID();
-		Udao.insertComment(comment,userID,idImage);
-		response.sendRedirect("ImageDetail?Iid="+idImage+"&Uid="+Uid+"&Cid="+Cid);
+	
+		
 	}
 
 	/**
@@ -49,7 +39,22 @@ public class UpdateCommentCotroller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		String idImage = request.getParameter("Iid");
+		String Uid = request.getParameter("Uid");
+		String Cid = request.getParameter("Cid");
+		String id_commennt = request.getParameter("id_commennt");
+		CommentDao Udao = new CommentDao();
+		System.out.println(id_commennt);
+		String comment = request.getParameter("comment");
+		System.out.println(id_commennt+"\t"+idImage+"\t"+Cid+"\t"+Uid+"\t"+comment);
+		Udao.updateComment(id_commennt,comment);
+		HttpSession session = request.getSession();
+		Accounts ac = (Accounts) session.getAttribute("acc");
+		String userID = ac.getUserID();
+		response.sendRedirect("ImageDetail?Iid="+idImage+"&Uid="+Uid+"&Cid="+Cid);
 	}
 
 }

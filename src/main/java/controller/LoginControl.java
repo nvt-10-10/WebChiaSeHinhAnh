@@ -21,12 +21,17 @@ import Model.InfUser;
 public class LoginControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	String idImage;
+	String Uid;
+	String Cid;
+
 	public LoginControl() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,7 +43,7 @@ public class LoginControl extends HttpServlet {
 
 			String user = request.getParameter("email");
 			String pass = request.getParameter("password");
-			UserDao  dao = new UserDao();
+			UserDao dao = new UserDao();
 			Accounts a = dao.checkLogin(user, pass);
 			if (a == null) {
 				request.setAttribute("mess", "<div class=\"alert alert-warning\" role=\"alert\">\r\n"
@@ -47,31 +52,36 @@ public class LoginControl extends HttpServlet {
 			} else {
 				HttpSession session = request.getSession();
 				session.setAttribute("acc", a);
-				session.setMaxInactiveInterval(60*60*2);
-				String idImage = request.getParameter("Iid");
-				String Uid = request.getParameter("Uid");
-				String Cid = request.getParameter("Cid");
-				if(idImage==null)
+				session.setMaxInactiveInterval(60 * 60 * 2);
+				idImage= (String) session.getAttribute("Iid");
+				Uid=(String) session.getAttribute("Uid");
+				Cid=(String) session.getAttribute("Cid");
+				System.out.println(idImage + "\t" + Uid + "\t" + Cid);
+				if (idImage == null)
 					response.sendRedirect("HomeControl");
 				else {
+					session.removeAttribute("Iid");
+					session.removeAttribute("Uid");
+					session.removeAttribute("Cid");
 					Login_de_BL(idImage, Uid, Cid, request, response);
+					
 				}
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
-	
-	public void Login_de_BL(String idImage,String Uid, String Cid  ,HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+
+	public void Login_de_BL(String idImage, String Uid, String Cid, HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
 		UserDao Udao = new UserDao();
-		CommentDao CDao=new CommentDao();
+		CommentDao CDao = new CommentDao();
 //      Lấy thông tin hình ảnh
-		ImageDao Idao= new ImageDao();
+		ImageDao Idao = new ImageDao();
 		Images I = Idao.getImageByid(idImage);
 //		lấy thông tin người dăng ảnh
 		Accounts A = Udao.getNameUser(Uid);
@@ -85,5 +95,6 @@ public class LoginControl extends HttpServlet {
 		request.setAttribute("listCM", listCM);
 		request.getRequestDispatcher("imageDetail.jsp").forward(request, response);
 	}
+
 
 }

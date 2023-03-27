@@ -35,6 +35,7 @@ public class ImageDetail extends HttpServlet {
 		String idImage = request.getParameter("Iid");
 		String Uid = request.getParameter("Uid");
 		String Cid = request.getParameter("Cid");
+		
 		UserDao Udao = new UserDao();
 		CommentDao CDao=new CommentDao();
 //      Lấy thông tin hình ảnh
@@ -44,7 +45,7 @@ public class ImageDetail extends HttpServlet {
 		Accounts A = Udao.getNameUser(Uid);
 		request.setAttribute("Ac", A);
 		request.setAttribute("detail", I);
-//		Lấy 6 hình ảnh mới nhất của người đăng
+//		Lấy 6 hình ảnh mới nhất của người đăng trong danh muc
 		List<Images> list = Idao.getTop6ImagesByCid(Cid);
 		request.setAttribute("listImg_Cid", list);
 //		Lấy comment của ảnh
